@@ -1,22 +1,25 @@
 package edu.hitsz.application;
 
-import edu.hitsz.aircraft.*;
-import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.aircraft.AbstractAircraft;
+import edu.hitsz.aircraft.EliteEnemy;
+import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.aircraft.MobEnemy;
 import edu.hitsz.basic.AbstractFlyingObject;
+import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.props.AbstractProps;
 import edu.hitsz.props.BombSupply;
 import edu.hitsz.props.FireSupply;
 import edu.hitsz.props.HealingPackage;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.*;
-
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -73,14 +76,13 @@ public class Game extends JPanel {
     public Game() {
         heroAircraft = new HeroAircraft(
                 Main.WINDOW_WIDTH / 2,
-                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
+                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight(),
                 0, 0, 100);
 
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         props = new LinkedList<>();
-
         /**
          * Scheduled 线程池，用于定时任务调度
          * 关于alibaba code guide：可命名的 ThreadFactory 一般需要第三方包
@@ -186,11 +188,11 @@ public class Game extends JPanel {
 
     private void shootAction() {
         // TODO 敌机射击
-    for(AbstractAircraft enemyAircraft : enemyAircrafts){
-        if(enemyAircraft instanceof EliteEnemy){
-            enemyBullets.addAll(enemyAircraft.shoot());
+        for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+            if (enemyAircraft instanceof EliteEnemy) {
+                enemyBullets.addAll(enemyAircraft.shoot());
+            }
         }
-    }
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
     }
@@ -259,13 +261,13 @@ public class Game extends JPanel {
                             //drop a prop
                             // i随机生成1-4的整数
                             int i = (int) (Math.random() * 4 + 1);
-                            switch(i) {
+                            switch (i) {
                                 case 1:
                                     props.add(new HealingPackage(
                                             enemyAircraft.getLocationX(),
                                             enemyAircraft.getLocationY(),
                                             0,
-                                            (int) ( enemyAircraft.getSpeedY() * 0.5)
+                                            (int) (enemyAircraft.getSpeedY() * 0.5)
                                     ));
                                     break;
                                 case 2:
@@ -273,7 +275,7 @@ public class Game extends JPanel {
                                             enemyAircraft.getLocationX(),
                                             enemyAircraft.getLocationY(),
                                             0,
-                                            (int) ( enemyAircraft.getSpeedY() * 0.5)
+                                            (int) (enemyAircraft.getSpeedY() * 0.5)
                                     ));
                                     break;
                                 case 3:
@@ -281,7 +283,7 @@ public class Game extends JPanel {
                                             enemyAircraft.getLocationX(),
                                             enemyAircraft.getLocationY(),
                                             0,
-                                            (int) ( enemyAircraft.getSpeedY() * 0.5)
+                                            (int) (enemyAircraft.getSpeedY() * 0.5)
                                     ));
                                     break;
                                 case 4:
@@ -348,7 +350,7 @@ public class Game extends JPanel {
      * 重写paint方法
      * 通过重复调用paint方法，实现游戏动画
      *
-     * @param  g
+     * @param g
      */
     @Override
     public void paint(Graphics g) {
