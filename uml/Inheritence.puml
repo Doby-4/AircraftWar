@@ -40,7 +40,9 @@ class HeroAircraft {
     - shootNum:int
     - power:int
     - direction:int
-    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    - instance:HeroAircraft
+    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + getInstance():HeroAircraft
     + forward():void
     + shoot():List<BaseBullet>
 }
@@ -115,4 +117,11 @@ class HealingPackage{
 AbstractProps <|-- BoobSupply
 AbstractProps <|-- FireSupply
 AbstractProps <|-- HealingPackage
+
+abstract class EnemyFactory{
+    + createEnemy():AbstractAircraft
+}
+
+abstract class EnemyAircraft{
+}
 @enduml

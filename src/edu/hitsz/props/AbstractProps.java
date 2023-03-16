@@ -1,10 +1,7 @@
 package edu.hitsz.props;
 
-import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.application.Main;
 import edu.hitsz.basic.AbstractFlyingObject;
-
-import java.util.List;
 
 /**
  * Abstract parent class of all kinds of props:
