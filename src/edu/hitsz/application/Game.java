@@ -308,15 +308,16 @@ public class Game extends JPanel {
                 continue;
             }
             if (heroAircraft.crash(prop)) {
-                //System.out.println("Hero crash prop!");
-                String type = prop.getClass().getName();
-                //System.out.println(type);
-                switch (type) {
-                    case "edu.hitsz.props.HealingPackage" -> heroAircraft.increaseHp(50);
-                    case "edu.hitsz.props.BombSupply" -> System.out.println("BombSupply active!");
-                    case "edu.hitsz.props.FireSupply" -> System.out.println("FireSupply active!");
-                }
+                prop.active(heroAircraft);
                 prop.vanish();
+                //System.out.println("Hero crash prop!");
+//                String type = prop.getClass().getName();
+                //System.out.println(type);
+//                switch (type) {
+//                    case "edu.hitsz.props.HealingPackage" -> heroAircraft.increaseHp(50);
+//                    case "edu.hitsz.props.BombSupply" -> System.out.println("BombSupply active!");
+//                    case "edu.hitsz.props.FireSupply" -> System.out.println("FireSupply active!");
+//                }
             }
         }
 
