@@ -1,0 +1,52 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+interface PropFactory{
+    + createProp(int locationX, int locationY, int speedX, int speedY) : AbstractProps
+
+}
+
+class FireFactory{
+    + createProp(int locationX, int locationY, int speedX, int speedY) : AbstractProps
+}
+
+class HealingFactory{
+    + createProp(int locationX, int locationY, int speedX, int speedY) : AbstractProps
+}
+
+class BombFactory{
+    + createProp(int locationX, int locationY, int speedX, int speedY) : AbstractProps
+}
+
+PropFactory <|.. FireFactory
+PropFactory <|.. HealingFactory
+PropFactory <|.. BombFactory
+
+abstract class AbstractProps{
+    + AbstractProps(int locationX, int locationY, int speedX, int speedY)
+    + forward():void
+    + {abstract} active(HeroAircraft heroAircraft):void
+}
+
+class BoobSupply{
+    + BoobSupply(int locationX, int locationY, int speedX, int speedY)
+    + active(HeroAircraft heroAircraft):void
+}
+
+class FireSupply{
+    + FireSupply(int locationX, int locationY, int speedX, int speedY)
+    + active(HeroAircraft heroAircraft):void
+}
+
+class HealingPackage{
+    + HealingPackage(int locationX, int locationY, int speedX, int speedY)
+    + active(HeroAircraft heroAircraft):void
+}
+
+AbstractProps <|-- BoobSupply
+AbstractProps <|-- FireSupply
+AbstractProps <|-- HealingPackage
+
+PropFactory --> AbstractProps
+
+
+@enduml

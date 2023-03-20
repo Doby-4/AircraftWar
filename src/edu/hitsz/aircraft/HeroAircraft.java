@@ -11,6 +11,7 @@ import java.util.List;
  * @author hitsz
  */
 public class HeroAircraft extends AbstractAircraft {
+    private static HeroAircraft instance = null;
 
     /**攻击方式 */
 
@@ -36,8 +37,15 @@ public class HeroAircraft extends AbstractAircraft {
      * @param speedY 英雄机射出的子弹的基准速度（英雄机无特定速度）
      * @param hp    初始生命值
      */
-    public HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
+    private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
+    }
+
+    public static synchronized HeroAircraft getInstance(int locationX, int locationY, int speedX, int speedY, int hp){
+        if(instance == null){
+            instance = new HeroAircraft(locationX, locationY, speedX, speedY, hp);
+        }
+        return instance;
     }
 
     @Override

@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+
+
+title Singleton Pattern HeroAircraft
+
+class HeroAircraft{
+- instance: HeroAircraft
+- shootNum: int
+- power: int
+- direction: int
+- HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
++ forward()
++ shoot(): List<BaseBullet>
+}
+
+HeroAircraft -> HeroAircraft : instance
+@enduml
