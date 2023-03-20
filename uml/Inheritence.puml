@@ -32,6 +32,7 @@ abstract class AbstractAircraft
     + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
     + decreaseHp(int decrease):void
     + getHp():int
+    + DropProps(int locationX, int locationY, int speedX, int speedY):AbstractProps
     + {abstract} shoot():List<BaseBullet>
  }
 
@@ -59,6 +60,7 @@ AbstractAircraft <|-- MobEnemy
 class EliteEnemy{
     + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
+    + DropProps(int locationX, int locationY, int speedX, int speedY):AbstractProps
     + shoot():List<BaseBullet>
 }
 AbstractAircraft <|-- EliteEnemy
@@ -98,30 +100,29 @@ AbstractFlyingObject <|-- BaseBullet
 abstract class AbstractProps{
     + Abstractprops(int locationX, int locationY, int speedX, int speedY)
     + forward():void
+    + {abstract} active(HeroAircraft heroAircraft):void
 }
 
 AbstractFlyingObject <|-- AbstractProps
 
 class BoobSupply{
     + BoobSupply(int locationX, int locationY, int speedX, int speedY)
+    + active(HeroAircraft heroAircraft):void
 }
 
 class FireSupply{
     + FireSupply(int locationX, int locationY, int speedX, int speedY)
+    + active(HeroAircraft heroAircraft):void
 }
 
 class HealingPackage{
     + HealingPackage(int locationX, int locationY, int speedX, int speedY)
+    + active(HeroAircraft heroAircraft):void
 }
 
 AbstractProps <|-- BoobSupply
 AbstractProps <|-- FireSupply
 AbstractProps <|-- HealingPackage
 
-abstract class EnemyFactory{
-    + createEnemy():AbstractAircraft
-}
 
-abstract class EnemyAircraft{
-}
 @enduml

@@ -5,8 +5,9 @@ import edu.hitsz.aircraft.EliteEnemy;
 import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.factory.EliteFactory;
 import edu.hitsz.factory.EnemyFactory;
-import edu.hitsz.factory.PropFactory;
+import edu.hitsz.factory.MobFactory;
 import edu.hitsz.props.AbstractProps;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -111,13 +112,15 @@ public class Game extends JPanel {
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     //随机产生MobEnemy或者EliteEnemy
                     if (Math.random() < 0.8) {
-                        enemyAircrafts.add(EnemyFactory.createEnemy("MOB",
+                        EnemyFactory MobF = new MobFactory();
+                        enemyAircrafts.add(MobF.createEnemy(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
-                                (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05),0,
+                                (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05), 0,
                                 10,
                                 30));
                     } else {
-                        enemyAircrafts.add(EnemyFactory.createEnemy("ELITE",
+                        EnemyFactory EliF = new EliteFactory();
+                        enemyAircrafts.add(EliF.createEnemy(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.ELITE_ENEMY_IMAGE.getWidth())),
                                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05),
                                 0,
@@ -253,43 +256,14 @@ public class Game extends JPanel {
                     if (enemyAircraft.notValid()) {
                         // TODO 获得分数，产生道具补给
                         // EliteEnemy drop a prop
-                        if (enemyAircraft instanceof EliteEnemy) {
+                        AbstractProps tempProp = enemyAircraft.DropProp(enemyAircraft.getLocationX(),
+                                enemyAircraft.getLocationY(),
+                                0,
+                                (int) (enemyAircraft.getSpeedY() * 0.5)
+                        );
+                        if (tempProp != null) {
                             //drop a prop
-                            props.add(PropFactory.createProp(enemyAircraft.getLocationX(),
-                                    enemyAircraft.getLocationY(),
-                                    0,
-                                    (int) (enemyAircraft.getSpeedY() * 0.5)
-                            ));
-//                            // i随机生成1-4的整数
-//                            int i = (int) (Math.random() * 4 + 1);
-//                            switch (i) {
-//                                case 1:
-//                                    props.add(new HealingPackage(
-//                                            enemyAircraft.getLocationX(),
-//                                            enemyAircraft.getLocationY(),
-//                                            0,
-//                                            (int) (enemyAircraft.getSpeedY() * 0.5)
-//                                    ));
-//                                    break;
-//                                case 2:
-//                                    props.add(new BombSupply(
-//                                            enemyAircraft.getLocationX(),
-//                                            enemyAircraft.getLocationY(),
-//                                            0,
-//                                            (int) (enemyAircraft.getSpeedY() * 0.5)
-//                                    ));
-//                                    break;
-//                                case 3:
-//                                    props.add(new FireSupply(
-//                                            enemyAircraft.getLocationX(),
-//                                            enemyAircraft.getLocationY(),
-//                                            0,
-//                                            (int) (enemyAircraft.getSpeedY() * 0.5)
-//                                    ));
-//                                    break;
-//                                case 4:
-//                                    break;
-//                            }
+                            props.add(tempProp);
                         }
                         score += 10;
                     }
@@ -297,6 +271,7 @@ public class Game extends JPanel {
                 // 英雄机 与 敌机 相撞，均损毁
                 if (enemyAircraft.crash(heroAircraft) || heroAircraft.crash(enemyAircraft)) {
                     enemyAircraft.vanish();
+                    //测试时可注释掉，无敌版
                     heroAircraft.decreaseHp(Integer.MAX_VALUE);
                 }
             }
@@ -310,14 +285,6 @@ public class Game extends JPanel {
             if (heroAircraft.crash(prop)) {
                 prop.active(heroAircraft);
                 prop.vanish();
-                //System.out.println("Hero crash prop!");
-//                String type = prop.getClass().getName();
-                //System.out.println(type);
-//                switch (type) {
-//                    case "edu.hitsz.props.HealingPackage" -> heroAircraft.increaseHp(50);
-//                    case "edu.hitsz.props.BombSupply" -> System.out.println("BombSupply active!");
-//                    case "edu.hitsz.props.FireSupply" -> System.out.println("FireSupply active!");
-//                }
             }
         }
 

@@ -2,6 +2,7 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.props.AbstractProps;
 
 import java.util.List;
 
@@ -32,11 +33,15 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
         }
     }
 
-    public void increaseHp(int increase){
+    public void increaseHp(int increase) {
         hp += increase;
-        if(hp > maxHp){
+        if (hp > maxHp) {
             hp = maxHp;
         }
+    }
+
+    public AbstractProps DropProp(int locationX, int locationY, int speedX, int speedY) {
+        return null;
     }
 
     public int getHp() {
