@@ -6,12 +6,12 @@ interface EnemyFactory {
 }
 
 class EliteFactory {
-    +createEnemy(int locationX, int locationY, int speedX, int speedY, int hp) : AbstractAircraft
+    +createEnemy() : AbstractAircraft
 
 }
 
 class MobFactory {
-    +createEnemy(int locationX, int locationY, int speedX, int speedY, int hp) : AbstractAircraft
+    +createEnemy() : AbstractAircraft
 }
 
 EnemyFactory <|.. EliteFactory

@@ -1,6 +1,7 @@
 package edu.hitsz.application;
 
 
+import edu.hitsz.aircraft.BossEnemy;
 import edu.hitsz.aircraft.EliteEnemy;
 import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.aircraft.MobEnemy;
@@ -37,6 +38,7 @@ public class ImageManager {
     public static BufferedImage ENEMY_BULLET_IMAGE;
     public static BufferedImage MOB_ENEMY_IMAGE;
     public static BufferedImage ELITE_ENEMY_IMAGE;
+    public static BufferedImage BOSS_ENEMY_IMAGE;
     public static BufferedImage BLOOD_IMAGE;
     public static BufferedImage BOMB_IMAGE;
     public static BufferedImage FIRE_SUPPLY_IMAGE;
@@ -44,7 +46,7 @@ public class ImageManager {
     static {
         try {
 
-            BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
+            BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg2.jpg"));
 
             HERO_IMAGE = ImageIO.read(new FileInputStream("src/images/hero.png"));
             MOB_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/mob.png"));
@@ -54,6 +56,7 @@ public class ImageManager {
             BLOOD_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_blood.png"));
             BOMB_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bomb.png"));
             FIRE_SUPPLY_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bullet.png"));
+            BOSS_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/boss.png"));
 
             CLASSNAME_IMAGE_MAP.put(HeroAircraft.class.getName(), HERO_IMAGE);
             CLASSNAME_IMAGE_MAP.put(MobEnemy.class.getName(), MOB_ENEMY_IMAGE);
@@ -63,6 +66,7 @@ public class ImageManager {
             CLASSNAME_IMAGE_MAP.put(HealingPackage.class.getName(), BLOOD_IMAGE);
             CLASSNAME_IMAGE_MAP.put(FireSupply.class.getName(), FIRE_SUPPLY_IMAGE);
             CLASSNAME_IMAGE_MAP.put(BombSupply.class.getName(), BOMB_IMAGE);
+            CLASSNAME_IMAGE_MAP.put(BossEnemy.class.getName(), BOSS_ENEMY_IMAGE);
 
         } catch (IOException e) {
             e.printStackTrace();

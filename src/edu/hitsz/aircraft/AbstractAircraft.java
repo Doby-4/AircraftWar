@@ -4,6 +4,7 @@ import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.props.AbstractProps;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -40,8 +41,8 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
         }
     }
 
-    public AbstractProps DropProp(int locationX, int locationY, int speedX, int speedY) {
-        return null;
+    public List<AbstractProps> DropProp(int locationX, int locationY, int speedX, int speedY) {
+        return new LinkedList<>();
     }
 
     public int getHp() {

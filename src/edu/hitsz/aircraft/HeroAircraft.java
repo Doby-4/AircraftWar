@@ -1,5 +1,7 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.application.ImageManager;
+import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.HeroBullet;
 
@@ -18,7 +20,7 @@ public class HeroAircraft extends AbstractAircraft {
     /**
      * 子弹一次发射数量
      */
-    private int shootNum = 1;
+    private final int shootNum = 3;
 
     /**
      * 子弹伤害
@@ -41,9 +43,12 @@ public class HeroAircraft extends AbstractAircraft {
         super(locationX, locationY, speedX, speedY, hp);
     }
 
-    public static synchronized HeroAircraft getInstance(int locationX, int locationY, int speedX, int speedY, int hp){
-        if(instance == null){
-            instance = new HeroAircraft(locationX, locationY, speedX, speedY, hp);
+    public static synchronized HeroAircraft getInstance() {
+        if (instance == null) {
+            instance = new HeroAircraft(Main.WINDOW_WIDTH / 2,
+                    Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight(),
+                    0, 0, 5000
+            );
         }
         return instance;
     }
@@ -58,17 +63,20 @@ public class HeroAircraft extends AbstractAircraft {
      * 通过射击产生子弹
      * @return 射击出的子弹List
      */
+
     public List<BaseBullet> shoot() {
         List<BaseBullet> res = new LinkedList<>();
         int x = this.getLocationX();
-        int y = this.getLocationY() + direction*2;
+        int y = this.getLocationY() + direction * 2;
         int speedX = 0;
-        int speedY = this.getSpeedY() + direction*5;
+        int speedY = this.getSpeedY() + direction * 5;
         BaseBullet bullet;
-        for(int i=0; i<shootNum; i++){
-            // 子弹发射位置相对飞机位置向前偏移
-            // 多个子弹横向分散
-            bullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
+        for (int i = 0; i < shootNum; i++) {
+            bullet = new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y, speedX + (i - 1) * 2, speedY - 10, power);
+            res.add(bullet);
+        }
+        for (int i = 0; i < shootNum; i++) {
+            bullet = new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y - 20, speedX + (i - 1) * 2, speedY - 10, power);
             res.add(bullet);
         }
         return res;

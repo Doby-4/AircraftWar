@@ -1,12 +1,12 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.application.Game;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.factory.BombFactory;
 import edu.hitsz.factory.FireFactory;
 import edu.hitsz.factory.HealingFactory;
-import edu.hitsz.factory.PropFactory;
 import edu.hitsz.props.AbstractProps;
 
 import java.util.LinkedList;
@@ -48,21 +48,24 @@ public class EliteEnemy extends AbstractAircraft{
     }
 
     @Override
-    public AbstractProps DropProp(int locationX, int locationY, int speedX, int speedY) {
+    public List<AbstractProps> DropProp(int locationX, int locationY, int speedX, int speedY) {
         //30%掉落火力道具、30%掉落加血道具、 30%掉落炸弹道具,10%不掉落道具
+        List<AbstractProps> res = new LinkedList<>();
         int random = (int) (Math.random() * 100);
         if (random < 30) {
-            PropFactory FireF = new FireFactory();
-            return FireF.createProp(locationX, locationY, speedX, speedY);
+            Game.propFactory = new FireFactory();
+            res.add(Game.propFactory.createProp(locationX, locationY, speedX, speedY));
         } else if (random < 60) {
-            PropFactory HealingF = new HealingFactory();
-            return HealingF.createProp(locationX, locationY, speedX, speedY);
+            Game.propFactory = new HealingFactory();
+            res.add(Game.propFactory.createProp(locationX, locationY, speedX, speedY));
         } else if (random < 90) {
-            PropFactory BombF = new BombFactory();
-            return BombF.createProp(locationX, locationY, speedX, speedY);
+            Game.propFactory = new BombFactory();
+            res.add(Game.propFactory.createProp(locationX, locationY, speedX, speedY));
         } else {
-            return null;
+            //不掉落道具
+            return new LinkedList<>();
         }
+        return res;
 
     }
 
