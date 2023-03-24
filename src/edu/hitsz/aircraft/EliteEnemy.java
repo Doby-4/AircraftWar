@@ -48,7 +48,7 @@ public class EliteEnemy extends AbstractAircraft{
     }
 
     @Override
-    public List<AbstractProps> DropProp(int locationX, int locationY, int speedX, int speedY) {
+    public List<AbstractProps> dropProp(int locationX, int locationY, int speedX, int speedY) {
         //30%掉落火力道具、30%掉落加血道具、 30%掉落炸弹道具,10%不掉落道具
         List<AbstractProps> res = new LinkedList<>();
         int random = (int) (Math.random() * 100);

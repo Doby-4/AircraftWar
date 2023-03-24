@@ -41,7 +41,7 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
         }
     }
 
-    public List<AbstractProps> DropProp(int locationX, int locationY, int speedX, int speedY) {
+    public List<AbstractProps> dropProp(int locationX, int locationY, int speedX, int speedY) {
         return new LinkedList<>();
     }
 

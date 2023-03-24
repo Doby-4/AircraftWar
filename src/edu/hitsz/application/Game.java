@@ -5,10 +5,7 @@ import edu.hitsz.aircraft.BossEnemy;
 import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.BaseBullet;
-import edu.hitsz.factory.EliteFactory;
-import edu.hitsz.factory.EnemyFactory;
-import edu.hitsz.factory.MobFactory;
-import edu.hitsz.factory.PropFactory;
+import edu.hitsz.factory.*;
 import edu.hitsz.props.AbstractProps;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -157,13 +154,13 @@ public class Game extends JPanel {
     }
 
     private void EnemyIN() {
-        // 新敌机产生
-        //随机产生MobEnemy或者EliteEnemy,当分数是200的整数倍时，产生BossEnemy
-//        if (score % 200 == 0 & score != 0 & isBossExist == false) {
-//                enemyFactory = new BossFactory();
-//                enemyAircrafts.add(enemyFactory.createEnemy());
-//                isBossExist = true;
-//        }
+//         新敌机产生
+//        随机产生MobEnemy或者EliteEnemy,当分数是200的整数倍时，产生BossEnemy
+        if (score % 200 == 0 & score != 0 & isBossExist == false) {
+            enemyFactory = new BossFactory();
+            enemyAircrafts.add(enemyFactory.createEnemy());
+            isBossExist = true;
+        }
         if (enemyAircrafts.size() < enemyMaxNumber) {
             if (Math.random() < 0.8) {
                 enemyFactory = new MobFactory();
@@ -266,7 +263,7 @@ public class Game extends JPanel {
                         }
                         //dropProp
                         List<AbstractProps> tempProps = new LinkedList<>();
-                        tempProps.addAll(enemyAircraft.DropProp(enemyAircraft.getLocationX(),
+                        tempProps.addAll(enemyAircraft.dropProp(enemyAircraft.getLocationX(),
                                 enemyAircraft.getLocationY(),
                                 0,
                                 (int) (enemyAircraft.getSpeedY() * 0.5)

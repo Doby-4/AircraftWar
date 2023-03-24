@@ -23,7 +23,7 @@ public class BossEnemy extends AbstractAircraft {
     private int direction = 1;
 
     @Override
-    public List<AbstractProps> DropProp(int locationX, int locationY, int speedX, int speedY) {
+    public List<AbstractProps> dropProp(int locationX, int locationY, int speedX, int speedY) {
         //掉落三个随机道具
         List<AbstractProps> res = new LinkedList<>();
         for (int i = -1; i < 2; i++) {
