@@ -15,3 +15,7 @@
 
 - 增加Boss机
 - TODO junit测试
+
+## v3.1
+
+- 完成junit测试
