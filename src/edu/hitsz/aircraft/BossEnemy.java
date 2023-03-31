@@ -11,6 +11,9 @@ import edu.hitsz.props.AbstractProps;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author doby
+ */
 public class BossEnemy extends AbstractAircraft {
     public BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
@@ -25,8 +28,9 @@ public class BossEnemy extends AbstractAircraft {
     @Override
     public List<AbstractProps> dropProp(int locationX, int locationY, int speedX, int speedY) {
         //掉落三个随机道具
+        int propNum = 3;
         List<AbstractProps> res = new LinkedList<>();
-        for (int i = -1; i < 2; i++) {
+        for (int i = -1; i < propNum - 1; i++) {
             int random = (int) (Math.random() * 90);
             if (random < 30) {
                 Game.propFactory = new FireFactory();

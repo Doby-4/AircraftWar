@@ -75,10 +75,6 @@ public class HeroAircraft extends AbstractAircraft {
             bullet = new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y, speedX + (i - 1) * 2, speedY - 10, power);
             res.add(bullet);
         }
-        for (int i = 0; i < shootNum; i++) {
-            bullet = new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y - 20, speedX + (i - 1) * 2, speedY - 10, power);
-            res.add(bullet);
-        }
         return res;
     }
 

@@ -5,6 +5,12 @@ import edu.hitsz.aircraft.BossEnemy;
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
 
+/**
+ * Boss工厂
+ * 用于生成Boss
+ *
+ * @author doby
+ */
 public class BossFactory implements EnemyFactory {
     @Override
     public AbstractAircraft createEnemy() {
@@ -13,7 +19,7 @@ public class BossFactory implements EnemyFactory {
                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05 + 90),
                 9,
                 0,
-                1000
+                650
         );
     }
 }

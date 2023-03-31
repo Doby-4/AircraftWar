@@ -112,7 +112,7 @@ public class Game extends JPanel {
             if (timeCountAndNewCycleJudge()) {
                 System.out.println(time);
                 // 新周期，敌机入场
-                EnemyIN();
+                enemyIn();
                 // 飞机射出子弹
                 shootAction();
             }
@@ -153,7 +153,7 @@ public class Game extends JPanel {
 
     }
 
-    private void EnemyIN() {
+    private void enemyIn() {
 //         新敌机产生
 //        随机产生MobEnemy或者EliteEnemy,当分数是200的整数倍时，产生BossEnemy
         if (score % 200 == 0 & score != 0 & isBossExist == false) {

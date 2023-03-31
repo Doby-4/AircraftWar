@@ -15,6 +15,12 @@ public abstract class AbstractProps extends AbstractFlyingObject {
         super(locationX, locationY, speedX, speedY);
     }
 
+    /**
+     * active the props
+     *
+     * @param heroAircraft
+     * @return void
+     */
     public abstract void active(HeroAircraft heroAircraft);
 
 
