@@ -7,6 +7,9 @@ import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.factory.*;
 import edu.hitsz.props.AbstractProps;
+import edu.hitsz.ranking.Score;
+import edu.hitsz.ranking.ScoreDAO;
+import edu.hitsz.ranking.ScoreDAOImpl;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.swing.*;
@@ -77,6 +80,11 @@ public class Game extends JPanel {
      */
     private boolean gameOverFlag = false;
 
+    /**
+     * ranking list DAO
+     */
+    private ScoreDAO scoreDAO;
+
     public Game() {
         heroAircraft = HeroAircraft.getInstance();
 
@@ -141,6 +149,20 @@ public class Game extends JPanel {
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
+                scoreDAO = new ScoreDAOImpl();
+                String name = JOptionPane.showInputDialog("Please input your name:");
+                Score scoreForThisGame = new Score(this.score, name);
+                System.out.println(scoreForThisGame);
+                scoreDAO.addScore(scoreForThisGame);
+                scoreDAO.saveScore();
+                scoreDAO.sortScore();
+                // 显示排行榜
+                System.out.println("Ranking List:");
+                int i = 1;
+                for (Score score : scoreDAO.getAllScores()) {
+                    System.out.println("NO." + i + "  " + score);
+                    i = i + 1;
+                }
             }
 
         };

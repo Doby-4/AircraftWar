@@ -3,9 +3,9 @@ package edu.hitsz.aircraft;
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
-import edu.hitsz.bullet.HeroBullet;
+import edu.hitsz.strategy.HeroStraightShoot;
+import edu.hitsz.strategy.ShootStrategy;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ public class HeroAircraft extends AbstractAircraft {
     /**
      * 子弹一次发射数量
      */
-    private final int shootNum = 3;
+    private final int shootNum = 1;
 
     /**
      * 子弹伤害
@@ -33,21 +33,28 @@ public class HeroAircraft extends AbstractAircraft {
     private int direction = -1;
 
     /**
+     * shoot strategy
+     */
+    private ShootStrategy shootStrategy;
+
+    /**
      * @param locationX 英雄机位置x坐标
      * @param locationY 英雄机位置y坐标
-     * @param speedX 英雄机射出的子弹的基准速度（英雄机无特定速度）
-     * @param speedY 英雄机射出的子弹的基准速度（英雄机无特定速度）
-     * @param hp    初始生命值
+     * @param speedX    英雄机射出的子弹的基准速度（英雄机无特定速度）
+     * @param speedY    英雄机射出的子弹的基准速度（英雄机无特定速度）
+     * @param hp        初始生命值
      */
-    private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
+    private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy shootStrategy) {
         super(locationX, locationY, speedX, speedY, hp);
+        this.shootStrategy = shootStrategy;
     }
 
     public static synchronized HeroAircraft getInstance() {
         if (instance == null) {
             instance = new HeroAircraft(Main.WINDOW_WIDTH / 2,
                     Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight(),
-                    0, 0, 5000
+                    0, 0, 5000,
+                    new HeroStraightShoot()
             );
         }
         return instance;
@@ -65,17 +72,11 @@ public class HeroAircraft extends AbstractAircraft {
      */
 
     public List<BaseBullet> shoot() {
-        List<BaseBullet> res = new LinkedList<>();
-        int x = this.getLocationX();
-        int y = this.getLocationY() + direction * 2;
-        int speedX = 0;
-        int speedY = this.getSpeedY() + direction * 5;
-        BaseBullet bullet;
-        for (int i = 0; i < shootNum; i++) {
-            bullet = new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y, speedX + (i - 1) * 2, speedY - 10, power);
-            res.add(bullet);
-        }
-        return res;
+        return shootStrategy.shoot(this.getLocationX(), this.getLocationY(), this.getSpeedY(), this.power, this.shootNum, this.direction);
+    }
+
+    public void setShootStrategy(ShootStrategy shootStrategy) {
+        this.shootStrategy = shootStrategy;
     }
 
 }

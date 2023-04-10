@@ -1,6 +1,7 @@
 package edu.hitsz.props;
 
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.strategy.HeroSectorShoot;
 
 /**
  * @author Doby
@@ -15,6 +16,7 @@ public class FireSupply extends AbstractProps {
 
     @Override
     public void active(HeroAircraft heroAircraft) {
+        heroAircraft.setShootStrategy(new HeroSectorShoot());
         System.out.println("FireSupply active!");
     }
 }

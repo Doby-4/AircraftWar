@@ -1,0 +1,45 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface ScoreDAO{
+    + getAllScores(): List<Score>
+    + addScore(Score score)
+    + deleteScore(Score score)
+    + updateScore(Score score)
+    + findScore(String name)
+    + saveScore()
+    + sortScore()
+}
+
+class ScoreDAOImpl{
+    - List<Score> scores
+    + ScoreDAOImpl()
+    + getAllScores(): List<Score>
+    + addScore(Score score)
+    + deleteScore(Score score)
+    + updateScore(Score score)
+    + findScore(String name)
+    + saveScore()
+    + sortScore()
+}
+
+class Score{
+    - name: String
+    - score: int
+    - date: Date
+    + Score(int score, String name)
+    + getName(): String
+    + getScore(): int
+    + setName(String name)
+    + setScore(int score)
+    + toString(): String
+}
+
+class Game
+
+Game ..> ScoreDAO
+ScoreDAOImpl ..|> ScoreDAO
+ScoreDAOImpl --> Score
+
+
+@enduml

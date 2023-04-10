@@ -2,11 +2,11 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.application.Game;
 import edu.hitsz.bullet.BaseBullet;
-import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.factory.BombFactory;
 import edu.hitsz.factory.FireFactory;
 import edu.hitsz.factory.HealingFactory;
 import edu.hitsz.props.AbstractProps;
+import edu.hitsz.strategy.ShootStrategy;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,15 +15,18 @@ import java.util.List;
  * @author doby
  */
 public class BossEnemy extends AbstractAircraft {
-    public BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
+    public BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy shootStrategy) {
         super(locationX, locationY, speedX, speedY, hp);
+        this.shootStrategy = shootStrategy;
     }
 
-    private int shootnum = 3;
+    private int shootNum = 3;
 
     private int power = 50;
 
     private int direction = 1;
+
+    private ShootStrategy shootStrategy;
 
     @Override
     public List<AbstractProps> dropProp(int locationX, int locationY, int speedX, int speedY) {
@@ -48,19 +51,11 @@ public class BossEnemy extends AbstractAircraft {
 
     @Override
     public List<BaseBullet> shoot() {
-        List<BaseBullet> bullets = new LinkedList<>();
-        int x = this.getLocationX();
-        int y = this.getLocationY() + direction * 2;
-        int speedX = 0;
-        int speedY = this.getSpeedY() + direction * 5;
-        BaseBullet bullet;
-        //扇形发射三个子弹
-        for (int i = 0; i < shootnum; i++) {
-            bullet = new EnemyBullet(x + (i * 2 - shootnum + 1) * 10, y, speedX + (i - 1) * 2, speedY, power);
-            bullets.add(bullet);
-        }
-        return bullets;
+        return shootStrategy.shoot(this.getLocationX(), this.getLocationY(), this.getSpeedY(), this.power, this.shootNum, this.direction);
     }
 
+    public void setShootStrategy(ShootStrategy shootStrategy) {
+        this.shootStrategy = shootStrategy;
+    }
 
 }

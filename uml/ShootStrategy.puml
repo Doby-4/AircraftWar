@@ -1,0 +1,82 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface ShootStrategy {
+    +shoot(int LocationX, int LocationY, int speedY, int power, int shootNum, int direction) : List<BaseBullet>
+
+}
+
+class EnemyStraightShoot{
+    +shoot(int LocationX, int LocationY, int speedY, int power, int shootNum, int direction) : List<BaseBullet>
+}
+EnemyStraightShoot ..|> ShootStrategy
+
+class EnemySectorShoot{
+    +shoot(int LocationX, int LocationY, int speedY, int power, int shootNum, int direction) : List<BaseBullet>
+}
+EnemySectorShoot ..|> ShootStrategy
+
+class HeroStraightShoot{
+    +shoot(int LocationX, int LocationY, int speedY, int power, int shootNum, int direction) : List<BaseBullet>
+}
+HeroStraightShoot ..|> ShootStrategy
+
+class HeroSectorShoot{
+    +shoot(int LocationX, int LocationY, int speedY, int power, int shootNum, int direction) : List<BaseBullet>
+}
+HeroSectorShoot ..|> ShootStrategy
+
+class HeroAircraft{
+- instance: HeroAircraft
+- shootNum: int
+- power: int
+- direction: int
+- HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy shootStrategy)
++ getInstance(): HeroAircraft
++ forward()
++ shoot(): List<BaseBullet>
++ setShootStrategy(ShootStrategy shootStrategy)
+}
+HeroAircraft o..> HeroStraightShoot
+
+class FireSupply{
+    + FireSupply(int locationX, int locationY, int speedX, int speedY)
+    + active(HeroAircraft heroAircraft):void
+}
+HeroAircraft o..> HeroSectorShoot
+HeroAircraft --> FireSupply
+FireSupply --> HeroSectorShoot
+
+class EliteEnemy{
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy shootStrategy)
+    + forward():void
+    + DropProps(int locationX, int locationY, int speedX, int speedY):AbstractProps
+    + shoot():List<BaseBullet>
+    + setShootStrategy(ShootStrategy shootStrategy):void
+}
+EliteEnemy o..> EnemyStraightShoot
+
+class EliteFactory {
+    +createEnemy() : AbstractAircraft
+
+}
+EliteFactory ..> EliteEnemy
+
+class BossEnemy{
+    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy shootStrategy)
+    + forward():void
+    + DropProps(int locationX, int locationY, int speedX, int speedY):AbstractProps
+    + shoot():List<BaseBullet>
+    + setShootStrategy(ShootStrategy shootStrategy):void
+}
+BossEnemy o..> EnemySectorShoot
+
+class BossFactory {
+    +createEnemy() : AbstractAircraft
+
+}
+BossFactory ..> BossEnemy
+
+
+
+@enduml

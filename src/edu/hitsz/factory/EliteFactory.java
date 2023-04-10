@@ -4,6 +4,7 @@ import edu.hitsz.aircraft.AbstractAircraft;
 import edu.hitsz.aircraft.EliteEnemy;
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
+import edu.hitsz.strategy.EnemyStraightShoot;
 
 
 /**
@@ -16,7 +17,8 @@ public class EliteFactory implements EnemyFactory {
                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05),
                 0,
                 10,
-                30
+                30,
+                new EnemyStraightShoot()
         );
     }
 }

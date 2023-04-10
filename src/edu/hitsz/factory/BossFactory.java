@@ -4,6 +4,7 @@ import edu.hitsz.aircraft.AbstractAircraft;
 import edu.hitsz.aircraft.BossEnemy;
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
+import edu.hitsz.strategy.EnemySectorShoot;
 
 /**
  * Boss工厂
@@ -19,7 +20,8 @@ public class BossFactory implements EnemyFactory {
                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05 + 90),
                 9,
                 0,
-                650
+                650,
+                new EnemySectorShoot()
         );
     }
 }
