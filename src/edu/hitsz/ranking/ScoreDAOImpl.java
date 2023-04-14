@@ -27,9 +27,9 @@ public class ScoreDAOImpl implements ScoreDAO {
     }
 
     @Override
-    public void deleteScore(Score score) {
-        // TODO
-
+    public void deleteScore(int row) {
+        scores.remove(row);
+        System.out.println("Score deleted: " + row);
     }
 
     @Override

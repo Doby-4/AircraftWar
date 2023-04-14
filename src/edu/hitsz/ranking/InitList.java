@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class InitList {
-    //新建一个list.txt文件，用于存储排行榜信息
+    //新建一个list.dat文件，用于存储排行榜信息
     public static void main(String[] args) {
         try {
             FileOutputStream fos = new FileOutputStream("list.dat");

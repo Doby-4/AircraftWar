@@ -7,7 +7,7 @@ public interface ScoreDAO {
 
     void addScore(Score score);
 
-    void deleteScore(Score score);
+    void deleteScore(int row);
 
     void updateScore(Score score);
 

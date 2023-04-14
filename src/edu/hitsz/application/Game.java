@@ -1,5 +1,6 @@
 package edu.hitsz.application;
 
+import edu.hitsz.SwingUI.RankingBoard;
 import edu.hitsz.aircraft.AbstractAircraft;
 import edu.hitsz.aircraft.BossEnemy;
 import edu.hitsz.aircraft.HeroAircraft;
@@ -48,6 +49,10 @@ public class Game extends JPanel {
     private final List<AbstractProps> props;
     private EnemyFactory enemyFactory;
     public static PropFactory propFactory;
+    /**
+     * 游戏背景图片
+     */
+    public static BufferedImage background;
 
     /**
      * 屏幕中出现的敌机最大数量
@@ -84,6 +89,12 @@ public class Game extends JPanel {
      * ranking list DAO
      */
     private ScoreDAO scoreDAO;
+
+    /**
+     * 分数数组
+     */
+    public List<Score> scores;
+
 
     public Game() {
         heroAircraft = HeroAircraft.getInstance();
@@ -154,18 +165,28 @@ public class Game extends JPanel {
                 Score scoreForThisGame = new Score(this.score, name);
                 System.out.println(scoreForThisGame);
                 scoreDAO.addScore(scoreForThisGame);
-                scoreDAO.saveScore();
                 scoreDAO.sortScore();
                 // 显示排行榜
-                System.out.println("Ranking List:");
-                int i = 1;
-                for (Score score : scoreDAO.getAllScores()) {
-                    System.out.println("NO." + i + "  " + score);
-                    i = i + 1;
-                }
+//                System.out.println("Ranking List:");
+//                int i = 1;
+//                for (Score score : scoreDAO.getAllScores()) {
+//                    System.out.println("NO." + i + "  " + score);
+//                    i = i + 1;
+//                }
+                // convert scores
+
+
+                // 切换页面至RankingBoard
+                Main.cardPanel.add(new RankingBoard(scoreDAO).getMainPanel(), "RankingBoard");
+                Main.cardLayout.show(Main.cardPanel, "RankingBoard");
+
+                // save scores
+
+
             }
 
         };
+//        SwingUtilities.invokeLater(task);
 /*
   以固定延迟时间进行执行
   本次任务执行完成后，需要延迟设定的延迟时间，才会执行新的任务
@@ -347,8 +368,8 @@ public class Game extends JPanel {
         super.paint(g);
 
         // 绘制背景,图片滚动
-        g.drawImage(ImageManager.BACKGROUND_IMAGE, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
-        g.drawImage(ImageManager.BACKGROUND_IMAGE, 0, this.backGroundTop, null);
+        g.drawImage(background, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
+        g.drawImage(background, 0, this.backGroundTop, null);
         this.backGroundTop += 1;
         if (this.backGroundTop == Main.WINDOW_HEIGHT) {
             this.backGroundTop = 0;
