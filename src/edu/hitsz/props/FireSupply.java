@@ -1,7 +1,10 @@
 package edu.hitsz.props;
 
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.Game;
+import edu.hitsz.soundEffect.MusicThread;
 import edu.hitsz.strategy.HeroSectorShoot;
+import edu.hitsz.strategy.HeroStraightShoot;
 
 /**
  * @author Doby
@@ -16,7 +19,28 @@ public class FireSupply extends AbstractProps {
 
     @Override
     public void active(HeroAircraft heroAircraft) {
-        heroAircraft.setShootStrategy(new HeroSectorShoot());
+        if (Game.soundEffectEnable) {
+            new MusicThread("src/videos/get_supply.wav", false).start();
+        }
+        // fire upgrade last for 10 seconds
         System.out.println("FireSupply active!");
+        if (!heroAircraft.isFireSupply) {
+            heroAircraft.isFireSupply = true;
+            heroAircraft.setShootStrategy(new HeroSectorShoot());
+            new Thread(() -> {
+                try {
+                    for (int i = 0; i < 10; i++) {
+                        System.out.println("FireSupply last for " + (10 - i) + " seconds");
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                heroAircraft.setShootStrategy(new HeroStraightShoot());
+                heroAircraft.isFireSupply = false;
+            }).start();
+
+        }
     }
+
 }

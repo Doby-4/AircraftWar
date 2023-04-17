@@ -11,6 +11,7 @@ import edu.hitsz.props.AbstractProps;
 import edu.hitsz.ranking.Score;
 import edu.hitsz.ranking.ScoreDAO;
 import edu.hitsz.ranking.ScoreDAOImpl;
+import edu.hitsz.soundEffect.MusicThread;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.swing.*;
@@ -31,6 +32,11 @@ import java.util.concurrent.TimeUnit;
 public class Game extends JPanel {
 
     private int backGroundTop = 0;
+
+    /**
+     * sound effect enable
+     */
+    public static boolean soundEffectEnable;
 
     /**
      * Scheduled 线程池，用于任务调度
@@ -95,6 +101,16 @@ public class Game extends JPanel {
      */
     public List<Score> scores;
 
+    /**
+     * 游戏背景音乐线程
+     */
+    private MusicThread bgMusic;
+
+    /**
+     * boss机线程
+     */
+    private MusicThread bossMusic;
+
 
     public Game() {
         heroAircraft = HeroAircraft.getInstance();
@@ -103,6 +119,11 @@ public class Game extends JPanel {
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         props = new LinkedList<>();
+        //启动背景音乐
+        if (soundEffectEnable) {
+            bgMusic = new MusicThread("src/videos/bgm.wav", true);
+            bgMusic.start();
+        }
 
         /*
           Scheduled 线程池，用于定时任务调度
@@ -136,6 +157,7 @@ public class Game extends JPanel {
                 shootAction();
             }
 
+
             // 子弹移动
             bulletsMoveAction();
 
@@ -160,33 +182,32 @@ public class Game extends JPanel {
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
+                if (soundEffectEnable) {
+                    new MusicThread("src/videos/game_over.wav", false).start();
+                    // stop bg music
+                    bgMusic.stopMusic();
+                    if (isBossExist) {
+                        bossMusic.stopMusic();
+                    }
+                }
+
                 scoreDAO = new ScoreDAOImpl();
                 String name = JOptionPane.showInputDialog("Please input your name:");
                 Score scoreForThisGame = new Score(this.score, name);
                 System.out.println(scoreForThisGame);
                 scoreDAO.addScore(scoreForThisGame);
                 scoreDAO.sortScore();
-                // 显示排行榜
-//                System.out.println("Ranking List:");
-//                int i = 1;
-//                for (Score score : scoreDAO.getAllScores()) {
-//                    System.out.println("NO." + i + "  " + score);
-//                    i = i + 1;
-//                }
-                // convert scores
-
 
                 // 切换页面至RankingBoard
                 Main.cardPanel.add(new RankingBoard(scoreDAO).getMainPanel(), "RankingBoard");
                 Main.cardLayout.show(Main.cardPanel, "RankingBoard");
 
-                // save scores
-
-
             }
 
         };
-//        SwingUtilities.invokeLater(task);
+
+
+
 /*
   以固定延迟时间进行执行
   本次任务执行完成后，需要延迟设定的延迟时间，才会执行新的任务
@@ -203,6 +224,10 @@ public class Game extends JPanel {
             enemyFactory = new BossFactory();
             enemyAircrafts.add(enemyFactory.createEnemy());
             isBossExist = true;
+            if (soundEffectEnable) {
+                bossMusic = new MusicThread("src/videos/bgm_boss.wav", true);
+                bossMusic.start();
+            }
         }
         if (enemyAircrafts.size() < enemyMaxNumber) {
             if (Math.random() < 0.8) {
@@ -214,6 +239,7 @@ public class Game extends JPanel {
             }
         }
     }
+
 
     //***********************
     //      Action 各部分
@@ -298,11 +324,17 @@ public class Game extends JPanel {
                     // 敌机损失一定生命值
                     enemyAircraft.decreaseHp(bullet.getPower());
                     bullet.vanish();
+                    if (soundEffectEnable) {
+                        new MusicThread("src/videos/bullet_hit.wav", false).start();
+                    }
                     if (enemyAircraft.notValid()) {
                         // TODO 获得分数，产生道具补给
                         // BossEnemy死亡，设置标志为false
                         if (enemyAircraft instanceof BossEnemy) {
                             isBossExist = false;
+                            if (soundEffectEnable) {
+                                bossMusic.stopMusic();
+                            }
                         }
                         //dropProp
                         List<AbstractProps> tempProps = new LinkedList<>();

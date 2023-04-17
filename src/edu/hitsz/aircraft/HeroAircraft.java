@@ -1,8 +1,10 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.application.Game;
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.soundEffect.MusicThread;
 import edu.hitsz.strategy.HeroStraightShoot;
 import edu.hitsz.strategy.ShootStrategy;
 
@@ -10,13 +12,17 @@ import java.util.List;
 
 /**
  * 英雄飞机，游戏玩家操控
+ *
  * @author hitsz
  */
 public class HeroAircraft extends AbstractAircraft {
     private static HeroAircraft instance = null;
 
     /**攻击方式 */
-
+    /**
+     * is firesupply on?
+     */
+    public boolean isFireSupply = false;
     /**
      * 子弹一次发射数量
      */
@@ -72,6 +78,9 @@ public class HeroAircraft extends AbstractAircraft {
      */
 
     public List<BaseBullet> shoot() {
+        if (Game.soundEffectEnable) {
+            new MusicThread("src/videos/bullet.wav", false).start();
+        }
         return shootStrategy.shoot(this.getLocationX(), this.getLocationY(), this.getSpeedY(), this.power, this.shootNum, this.direction);
     }
 
