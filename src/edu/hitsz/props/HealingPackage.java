@@ -1,6 +1,8 @@
 package edu.hitsz.props;
 
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.Game;
+import edu.hitsz.soundEffect.MusicThread;
 
 /**
  * @author Doby
@@ -15,6 +17,10 @@ public class HealingPackage extends AbstractProps {
 
     @Override
     public void active(HeroAircraft heroAircraft) {
+        if (Game.soundEffectEnable) {
+            new MusicThread("src/videos/get_supply.wav", false).start();
+        }
         heroAircraft.increaseHp(50);
+
     }
 }

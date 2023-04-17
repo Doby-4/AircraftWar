@@ -27,6 +27,7 @@ public class ModeChoosing {
             @Override
             public void actionPerformed(ActionEvent e) {
                 level = 1;
+                Game.soundEffectEnable = SoundEffectCtl.isSelected();
                 Game game = new easyGame();
                 Main.cardPanel.add(game, "game");
                 Main.cardLayout.show(Main.cardPanel, "game");
@@ -43,7 +44,9 @@ public class ModeChoosing {
             @Override
             public void actionPerformed(ActionEvent e) {
                 level = 2;
+                Game.soundEffectEnable = SoundEffectCtl.isSelected();
                 Game game = new normalGame();
+//                game.soundEffectEnable = SoundEffectCtl.isSelected();
                 Main.cardPanel.add(game, "game");
                 Main.cardLayout.show(Main.cardPanel, "game");
                 game.action();
@@ -59,7 +62,9 @@ public class ModeChoosing {
             @Override
             public void actionPerformed(ActionEvent e) {
                 level = 3;
+                Game.soundEffectEnable = SoundEffectCtl.isSelected();
                 Game game = new hardGame();
+//                game.soundEffectEnable = SoundEffectCtl.isSelected();
                 Main.cardPanel.add(game, "game");
                 Main.cardLayout.show(Main.cardPanel, "game");
                 game.action();

@@ -20,7 +20,7 @@ public class BossFactory implements EnemyFactory {
                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05 + 90),
                 9,
                 0,
-                650,
+                600,
                 new EnemySectorShoot()
         );
     }
