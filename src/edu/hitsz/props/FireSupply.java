@@ -29,7 +29,11 @@ public class FireSupply extends AbstractProps {
             heroAircraft.setShootStrategy(new HeroSectorShoot());
             new Thread(() -> {
                 try {
+
                     for (int i = 0; i < 10; i++) {
+                        if (heroAircraft.notValid()) {
+                            break;
+                        }
                         System.out.println("FireSupply last for " + (10 - i) + " seconds");
                         Thread.sleep(1000);
                     }
