@@ -7,7 +7,9 @@ import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.factory.*;
+import edu.hitsz.observePattern.Bomber;
 import edu.hitsz.props.AbstractProps;
+import edu.hitsz.props.BombSupply;
 import edu.hitsz.ranking.Score;
 import edu.hitsz.ranking.ScoreDAO;
 import edu.hitsz.ranking.ScoreDAOImpl;
@@ -53,7 +55,6 @@ public class Game extends JPanel {
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
     private final List<AbstractProps> props;
-    private EnemyFactory enemyFactory;
     public static PropFactory propFactory;
     /**
      * 游戏背景图片
@@ -96,10 +97,7 @@ public class Game extends JPanel {
      */
     private ScoreDAO scoreDAO;
 
-    /**
-     * 分数数组
-     */
-    public List<Score> scores;
+
 
     /**
      * 游戏背景音乐线程
@@ -170,6 +168,9 @@ public class Game extends JPanel {
             // 撞击检测
             crashCheckAction();
 
+            // boss机检测
+            isBossExisting();
+
             // 后处理
             postProcessAction();
 
@@ -217,10 +218,22 @@ public class Game extends JPanel {
 
     }
 
+    private void isBossExisting() {
+        boolean temp = false;
+        for (AbstractAircraft boss : enemyAircrafts) {
+            if (boss.getClass() == BossEnemy.class) {
+                temp = true;
+                break;
+            }
+        }
+        isBossExist = temp;
+    }
+
     private void enemyIn() {
 //         新敌机产生
 //        随机产生MobEnemy或者EliteEnemy,当分数是200的整数倍时，产生BossEnemy
-        if (score % 200 == 0 & score != 0 & isBossExist == false) {
+        EnemyFactory enemyFactory;
+        if (score % 200 == 0 & score != 0 & !isBossExist) {
             enemyFactory = new BossFactory();
             enemyAircrafts.add(enemyFactory.createEnemy());
             isBossExist = true;
@@ -257,7 +270,7 @@ public class Game extends JPanel {
     }
 
     private void shootAction() {
-        // TODO 敌机射击
+        // 敌机射击
         for (AbstractAircraft enemyAircraft : enemyAircrafts) {
 
                 enemyBullets.addAll(enemyAircraft.shoot());
@@ -296,7 +309,7 @@ public class Game extends JPanel {
      * 3. 英雄获得补给
      */
     private void crashCheckAction() {
-        // TODO 敌机子弹攻击英雄
+        // 敌机子弹攻击英雄
         for (BaseBullet bullet : enemyBullets) {
             if (bullet.notValid()) {
                 continue;
@@ -328,17 +341,15 @@ public class Game extends JPanel {
                         new MusicThread("src/videos/bullet_hit.wav", false).start();
                     }
                     if (enemyAircraft.notValid()) {
-                        // TODO 获得分数，产生道具补给
+                        // 获得分数，产生道具补给
                         // BossEnemy死亡，设置标志为false
                         if (enemyAircraft instanceof BossEnemy) {
-                            isBossExist = false;
                             if (soundEffectEnable) {
                                 bossMusic.stopMusic();
                             }
                         }
                         //dropProp
-                        List<AbstractProps> tempProps = new LinkedList<>();
-                        tempProps.addAll(enemyAircraft.dropProp(enemyAircraft.getLocationX(),
+                        List<AbstractProps> tempProps = new LinkedList<>(enemyAircraft.dropProp(enemyAircraft.getLocationX(),
                                 enemyAircraft.getLocationY(),
                                 0,
                                 (int) (enemyAircraft.getSpeedY() * 0.5)
@@ -347,7 +358,8 @@ public class Game extends JPanel {
                             //drop a prop
                             props.addAll(tempProps);
                         }
-                        score += 10;
+                        // boss score
+                        score += enemyAircraft.score;
                     }
                 }
                 // 英雄机 与 敌机 相撞，均损毁
@@ -359,14 +371,28 @@ public class Game extends JPanel {
             }
         }
 
-        // Todo: 我方获得道具，道具生效
+        // 我方获得道具，道具生效
         for (AbstractProps prop : props) {
             if (prop.notValid()) {
                 continue;
             }
             if (heroAircraft.crash(prop)) {
-                prop.active(heroAircraft);
-                prop.vanish();
+                // 是否为BombSupply
+                if (prop.getClass() == BombSupply.class) {
+                    BombSupply bomb = (BombSupply) prop;
+                    for (AbstractAircraft enemy : enemyAircrafts) {
+                        bomb.addBomber((Bomber) enemy);
+                        score += enemy.score;
+                    }
+                    for (BaseBullet enemyBullet : enemyBullets) {
+                        bomb.addBomber((Bomber) enemyBullet);
+                    }
+                    bomb.active(heroAircraft);
+                    bomb.vanish();
+                } else {
+                    prop.active(heroAircraft);
+                    prop.vanish();
+                }
             }
         }
 

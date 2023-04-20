@@ -6,6 +6,7 @@ import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.factory.BombFactory;
 import edu.hitsz.factory.FireFactory;
 import edu.hitsz.factory.HealingFactory;
+import edu.hitsz.observePattern.Bomber;
 import edu.hitsz.props.AbstractProps;
 import edu.hitsz.strategy.ShootStrategy;
 
@@ -19,11 +20,13 @@ import java.util.List;
  *
  * @author Doby
  */
-public class EliteEnemy extends AbstractAircraft{
+public class EliteEnemy extends AbstractAircraft implements Bomber {
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy shootStrategy) {
         super(locationX, locationY, speedX, speedY, hp);
         this.shootStrategy = shootStrategy;
+        this.score = 50;
     }
+
     /**
      * 子弹一次发射数量
      */
@@ -82,5 +85,10 @@ public class EliteEnemy extends AbstractAircraft{
 
     public void setShootStrategy(ShootStrategy shootStrategy) {
         this.shootStrategy = shootStrategy;
+    }
+
+    @Override
+    public void update() {
+        this.decreaseHp(maxHp);
     }
 }

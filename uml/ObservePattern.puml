@@ -1,0 +1,76 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class BombSupply{
+    - List<Bomber> : bombers
+    + BoobSupply(int locationX, int locationY, int speedX, int speedY)
+    + active(HeroAircraft heroAircraft):void
+    + addBpmber(Bomber bomber) : void
+    + removeBomber(Bomber bomber) : void
+    + notifyAllBombers() : void
+}
+BombSupply o--> Bomber
+
+interface Bomber{
+    + update():void
+   }
+
+class Game
+Game ..> BombSupply
+
+class BossEnemy {
+    - shootNum : int
+    - power : int
+    - direction : int
+    - shootStrategy : ShootStrategy
+    + BossEnemy(locationX : int, locationY : int, speedX : int, speedY : int, hp : int, shootStrategy : ShootStrategy)
+    + setShootStrategy(shootStrategy : ShootStrategy) : void
+    + dropProp(locationX : int, locationY : int, speedX : int, speedY : int) : List<AbstractProps>
+    + shoot() : List<BaseBullet>
+    + update() : void
+}
+BossEnemy ..|> Bomber
+
+class EliteEnemy {
+        -shootNum: int
+        -power: int
+        -direction: int
+        -shootStrategy: ShootStrategy
+        +EliteEnemy(locationX: int, locationY: int, speedX: int, speedY: int, hp: int, shootStrategy: ShootStrategy)
+        +forward(): void
+        +dropProp(locationX: int, locationY: int, speedX: int, speedY: int): List<AbstractProps>
+        +shoot(): List<BaseBullet>
+        +setShootStrategy(shootStrategy: ShootStrategy): void
+        +update(): void
+}
+EliteEnemy ..|> Bomber
+
+class MobEnemy {
+    -locationX: int
+    -locationY: int
+    -speedX: int
+    -speedY: int
+    -hp: int
+    -maxHp: int
+
+    +MobEnemy(locationX: int, locationY: int, speedX: int, speedY: int, hp: int)
+    +forward(): void
+    +shoot(): List<BaseBullet>
+    +update(): void
+}
+MobEnemy ..|> Bomber
+
+class EnemyBullet {
+    -locationX: int
+    -locationY: int
+    -speedX: int
+    -speedY: int
+    -power: int
+
+    +EnemyBullet(locationX: int, locationY: int, speedX: int, speedY: int, power: int)
+    +update(): void
+}
+EnemyBullet ..|> Bomber
+
+
+@enduml
