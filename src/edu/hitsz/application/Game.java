@@ -7,7 +7,9 @@ import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.factory.*;
+import edu.hitsz.observePattern.Bomber;
 import edu.hitsz.props.AbstractProps;
+import edu.hitsz.props.BombSupply;
 import edu.hitsz.ranking.Score;
 import edu.hitsz.ranking.ScoreDAO;
 import edu.hitsz.ranking.ScoreDAOImpl;
@@ -170,6 +172,9 @@ public class Game extends JPanel {
             // 撞击检测
             crashCheckAction();
 
+            // boss机检测
+            isBossExisting();
+
             // 后处理
             postProcessAction();
 
@@ -215,6 +220,16 @@ public class Game extends JPanel {
 
         executorService.scheduleWithFixedDelay(task, timeInterval, timeInterval, TimeUnit.MILLISECONDS);
 
+    }
+
+    private void isBossExisting() {
+        boolean temp = false;
+        for (AbstractAircraft boss : enemyAircrafts) {
+            if (boss.getClass() == BossEnemy.class) {
+                temp = true;
+            }
+        }
+        isBossExist = temp;
     }
 
     private void enemyIn() {
@@ -331,7 +346,7 @@ public class Game extends JPanel {
                         // TODO 获得分数，产生道具补给
                         // BossEnemy死亡，设置标志为false
                         if (enemyAircraft instanceof BossEnemy) {
-                            isBossExist = false;
+                            //isBossExist = false;
                             if (soundEffectEnable) {
                                 bossMusic.stopMusic();
                             }
@@ -347,7 +362,8 @@ public class Game extends JPanel {
                             //drop a prop
                             props.addAll(tempProps);
                         }
-                        score += 10;
+                        // boss score
+                        score += enemyAircraft.score;
                     }
                 }
                 // 英雄机 与 敌机 相撞，均损毁
@@ -365,8 +381,22 @@ public class Game extends JPanel {
                 continue;
             }
             if (heroAircraft.crash(prop)) {
-                prop.active(heroAircraft);
-                prop.vanish();
+                // 是否为BombSupply
+                if (prop.getClass() == BombSupply.class) {
+                    BombSupply bomb = (BombSupply) prop;
+                    for (AbstractAircraft enemy : enemyAircrafts) {
+                        bomb.addBomber((Bomber) enemy);
+                        score += enemy.score;
+                    }
+                    for (BaseBullet enemyBullet : enemyBullets) {
+                        bomb.addBomber((Bomber) enemyBullet);
+                    }
+                    bomb.active(heroAircraft);
+                    bomb.vanish();
+                } else {
+                    prop.active(heroAircraft);
+                    prop.vanish();
+                }
             }
         }
 
