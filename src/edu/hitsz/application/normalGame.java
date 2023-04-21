@@ -10,7 +10,6 @@ import edu.hitsz.factory.MobFactory;
 import edu.hitsz.soundEffect.MusicThread;
 
 public class normalGame extends Game {
-    private float tempDifficulty = 1.0f;
     private float difficulty = 1.0f;
     private float probability = 0.8f;
 
@@ -77,7 +76,7 @@ public class normalGame extends Game {
     protected void printDifficulty() {
         System.out.printf("Difficulty up! Elite enemy probability: %.2f, enemy attribute magnification: %.2f\n", probability, difficulty);
         System.out.printf("Elite enemy max HP:%d, Mob enemy max HP:%d, Boss enemy max HP:%d\n", ELITE_HP, MOB_HP, BOSS_HP);
-        System.out.printf("Enemy firing rate: %d, hero firing rate: %d", +(1200 - enemyCycleDuration), (1200 - heroShootCycleDuration));
+        System.out.printf("Enemy firing rate: %d, hero firing rate: %d", (1200 - enemyCycleDuration), (1200 - heroShootCycleDuration));
 
     }
 

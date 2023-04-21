@@ -1,0 +1,72 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class Game {
+             -gameOverFlag: boolean
+             -executorService: ExecutorService
+             -score: int
+             -scoreDAO: ScoreDAOImpl
+             -enemyMaxNumber: int
+             -timeInterval: int
+             -enemyAircrafts: List<AbstractAircraft>
+             -heroBullets: List<BaseBullet>
+             -enemyBullets: List<BaseBullet>
+             -props: List<AbstractProps>
+             -bgMusic: MusicThread
+             -soundEffectEnable: boolean
+             -bossMusic: MusicThread
+             -isBossExist: boolean
+             -heroAircraft: Hero
+             +Game()
+             + final action() : void
+             # printDifficulty() : void
+             # ElietProbabilityUp() : void
+             # difficultyUp() : void
+             -gameOverProcess() : void
+             -isBossExisting()  : boolean
+             #enemyIn() : void
+             -enemyShoot() : void
+             -heroShoot() : void
+             -bulletsMoveAction() : void
+             -aircraftsMoveAction() : void
+             -propsMoveAction() : void
+             -crashCheckAction() : void
+             - postProcessAction() : void
+         }
+
+class easyGame {
+
+             +easyGame()
+             # enemyIN() : void
+
+         }
+easyGame --|> Game
+
+class normalGame {
+               - difficulty : float
+               - probability : float
+             +normalGame()
+             # enemyIN() : void
+             # difficultyUp() : void
+             # ElietProbabilityUp() : void
+             # printDifficulty() : void
+
+         }
+normalGame --|> Game
+
+class hardGame {
+               - difficulty : float
+               - probability : float
+             +hardGame()
+             # enemyIN() : void
+             # difficultyUp() : void
+             # ElietProbabilityUp() : void
+             # printDifficulty() : void
+
+         }
+hardGame --|> Game
+
+class main
+main ..> Game
+
+@enduml

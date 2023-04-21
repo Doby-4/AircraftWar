@@ -5,7 +5,7 @@ class BombSupply{
     - List<Bomber> : bombers
     + BoobSupply(int locationX, int locationY, int speedX, int speedY)
     + active(HeroAircraft heroAircraft):void
-    + addBpmber(Bomber bomber) : void
+    + addBomber(Bomber bomber) : void
     + removeBomber(Bomber bomber) : void
     + notifyAllBombers() : void
 }
